@@ -8,34 +8,27 @@ Sistem ini didesain menggunakan pendekatan *microservices-lite* di mana setiap k
 
 ```mermaid
 graph TD
-    subgraph "CI/CD Pipeline (GitHub Actions)"
-        A[Developer (Git Push)] -->|Triggers| B(GitHub Actions)
-        B -->|Build & Tag| C{Docker Hub}
+    subgraph CICD["CI/CD Pipeline - GitHub Actions"]
+        A["Developer - Git Push"] -->|Triggers| B["GitHub Actions"]
+        B -->|Build and Tag| C["Docker Hub"]
     end
 
-    subgraph "Production Server (AWS EC2 Ubuntu)"
-        C -->|SSH Pull & Up| D(Docker Engine)
+    subgraph AWS["Production Server - AWS EC2 Ubuntu"]
+        C -->|SSH Pull and Up| D["Docker Engine"]
         
-        subgraph "Docker Compose Environment"
-            D --> E[Nginx Container<br/>Port 80]
-            D --> F[Apache+PHP Container<br/>Port 8080]
-            D --> G[(MariaDB Container<br/>Port 3306)]
+        subgraph COMPOSE["Docker Compose Environment"]
+            D --> E["Nginx Container - Port 80"]
+            D --> F["Apache+PHP Container - Port 8080"]
+            D --> G["MariaDB Container - Port 3306"]
             
             F -->|Read/Write Data| G
         end
     end
 
-    subgraph "Clients"
-        H((User Browser)) -->|Akses Port 80| E
+    subgraph CLIENT["Clients"]
+        H["User Browser"] -->|Akses Port 80| E
         H -->|Akses Port 8080| F
     end
-
-    classDef aws fill:#FF9900,stroke:#232F3E,stroke-width:2px,color:#fff;
-    classDef docker fill:#0db7ed,stroke:#0f8ec4,stroke-width:2px,color:#fff;
-    classDef github fill:#2b3137,stroke:#fafbfc,stroke-width:2px,color:#fff;
-    
-    class D,E,F,G docker;
-    class B,C github;
 ```
 
 ## Penjelasan Environment & Komponen
